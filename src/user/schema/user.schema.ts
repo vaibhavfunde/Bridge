@@ -96,8 +96,16 @@ roles: string[];
   @Prop({ type: Date, default: null })
   lastLogin: Date;
 
+  
+
 
    _id?: Types.ObjectId;
+
+   @Prop({ type: String, default: null })  // <-- NEW
+accessToken: string;
+
 }
+
+
 
 export const UserSchema = SchemaFactory.createForClass(User);

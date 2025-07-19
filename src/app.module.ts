@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 import appConfig from './config/app.config';
 import { MongooseModule } from '@nestjs/mongoose'; // Import MongooseModule for MongoDB connection
 import { AuthModule } from './auth/auth.module';
+import { LinkModule } from './link/link.module';
 
 
 @Module({
@@ -29,6 +30,8 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     
     AuthModule,
+    
+    LinkModule,
    
   ],
   controllers: [AppController],

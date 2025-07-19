@@ -197,63 +197,128 @@ export class UserService {
 
 
   // Login a user
-  async login(loginDto: LoginDto) {
-    const { email, password } = loginDto;
+  // async login(loginDto: LoginDto) {
+  //   const { email, password } = loginDto;
 
-   // Check if user exists
-    const user = await this.userModel.findOne({ email });
-    if (!user) {
-      throw new UnauthorizedException('Invalid email or password');
-    }
+  //  // Check if user exists
+  //   const user = await this.userModel.findOne({ email });
+  //   if (!user) {
+  //     throw new UnauthorizedException('Invalid email or password');
+  //   }
 
-    // Validate password
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      throw new UnauthorizedException('Invalid email or password');
-    }
+  //   // Validate password
+  //   const isPasswordMatch = await bcrypt.compare(password, user.password);
+  //   if (!isPasswordMatch) {
+  //     throw new UnauthorizedException('Invalid email or password');
+  //   }
 
-    // Generate JWT token
-    // const token = jwt.sign(
-    //   { id: user._id, email: user.email },
-    //   process.env.JWT_SECRET || 'secret123',
-    //   { expiresIn: '1h' },
-    // );
+  //   // Generate JWT token
+  //   // const token = jwt.sign(
+  //   //   { id: user._id, email: user.email },
+  //   //   process.env.JWT_SECRET || 'secret123',
+  //   //   { expiresIn: '1h' },
+  //   // );
 
-    const token = this.generateTokens(user);
+  //   const token = this.generateTokens(user);
 
-    // const {password , ...result} = user;
+  //  // const {password , ...result} = user;
 
-    const { password: _removedPassword, ...result } = user;
+  //   const { password: _removedPassword, ...result } = user;
 
 
-    return {
-        user: {
-      id: user._id,
-      email: user.email,
-      username: user.username,
-      roles: user.roles,
+  //   return {
+  //       user: {
+  //     id: user._id,
+  //     email: user.email,
+  //     username: user.username,
+  //     roles: user.roles,
      
-    },
-      ...token,
-    };
+  //   },
+  //     ...token,
+  //   };
+
+   
 
 
-    // const token = this.jwtService.sign({ id: user._id, email: user.email } , {
-    //   expiresIn: '1h',
-    //   secret: process.env.JWT_SECRET|| 'secret123',
-    // })  ;
+  //   // const token = this.jwtService.sign({ id: user._id, email: user.email } , {
+  //   //   expiresIn: '1h',
+  //   //   secret: process.env.JWT_SECRET|| 'secret123',
+  //   // })  ;
 
-    // return {
-    //   message: 'Login successful',
-    //   user: {
-    //     id: user._id,
-    //     email: user.email,
-    //     username: user.username,
-    //   },
-    //   token,
-    // };
+  //   // return {
+  //   //   message: 'Login successful',
+  //   //   user: {
+  //   //     id: user._id,
+  //   //     email: user.email,
+  //   //     username: user.username,
+  //   //   },
+  //   //   token,
+  //   // };
+  // }
+
+
+  async login(loginDto: LoginDto) {
+  const { email, password } = loginDto;
+
+  const user = await this.userModel.findOne({ email });
+  if (!user) {
+    throw new UnauthorizedException('Invalid email or password');
   }
 
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+  if (!isPasswordMatch) {
+    throw new UnauthorizedException('Invalid email or password');
+  }
+
+  const token = this.generateTokens(user);
+
+  // Update user document with access token and last login
+  user.accessToken = token.accessToken;
+  user.lastLogin = new Date();
+  await user.save();
+
+  const { password: _removedPassword, ...safeUser } = user.toObject();
+
+  return {
+    message: 'Login successful',
+    user: safeUser,
+    ...token,
+  };
+}
+
+
+
+  // async login(loginDto: LoginDto) {
+  //   const { email, password } = loginDto;
+
+  //   // 1. Check if user exists
+  //   const user = await this.userModel.findOne({ email });
+  //   if (!user) {
+  //     throw new UnauthorizedException('Invalid email or password');
+  //   }
+
+  //   // 2. Check password
+  //   const isPasswordMatch = await bcrypt.compare(password, user.password);
+  //   if (!isPasswordMatch) {
+  //     throw new UnauthorizedException('Invalid email or password');
+  //   }
+
+  //   // 3. Remove password from the user object
+  //   const { password: _removed, ...safeUser } = user.toObject();
+
+  //   // 4. Generate JWT token
+  //   const payload = { sub: user._id, email: user.email };
+  //   const accessToken = this.jwtService.sign(payload, {
+  //     expiresIn: '1h',
+  //   });
+
+  //   // 5. Return response
+  //   return {
+  //     message: 'Login successful',
+  //     user: safeUser,
+  //     accessToken,
+  //   };
+  // }
 
   async refreshToken(refreshToken: string) {
     try {
