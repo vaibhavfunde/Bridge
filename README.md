@@ -8,8 +8,8 @@ Features
 
 ###  Authentication
 
-* **POST /auth/signup**: Register a new user
-* **POST /auth/login**: Authenticate and receive JWT token
+* **POST /user/signup**: Register a new user
+* **POST /user/login**: Authenticate and receive JWT token
 
 ###  Links
 
@@ -80,7 +80,7 @@ Indexes are created on `shortCode` and `createdBy` for fast lookup and stat retr
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-org/link-shortener
+[git clone https://github.com/your-org/link-shortener](https://github.com/vaibhavfunde/Bridge.git)
 cd link-shortener
 ```
 
@@ -108,11 +108,7 @@ npm run start:dev
 
 App runs at: `http://localhost:3000`
 
-### 5. API Test Tool (Optional)
 
-Import `postman_collection.json` from `/docs/postman` folder into Postman.
-
----
 
 ##  Testing
 
@@ -142,8 +138,8 @@ artillery run load-test.yml
 
 This simulates **10,000+ requests** to:
 
-* `POST /auth/signup`
-* `POST /auth/login`
+* `POST /user/signup`
+* `POST /user/login`
 * `POST /links`
 * `GET /:shortCode`
 * `GET /links/:shortCode/stats`
