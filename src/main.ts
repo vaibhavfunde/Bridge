@@ -6,7 +6,7 @@ import { ThrottlerExceptionFilter } from './filters/throttler-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //validation pipe to validate incoming requests bodies autiomatically
+  
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

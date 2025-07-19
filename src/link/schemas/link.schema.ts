@@ -2,7 +2,7 @@
 
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-// import { User } from 'src/user/schemas/user.schema';
+
 import { User } from '../../user/schema/user.schema';
 
 export type LinkDocument = Link & Document;

@@ -1,6 +1,6 @@
 
 
-// import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Link, LinkDocument } from './schemas/link.schema';
 import { Model } from 'mongoose';
@@ -42,7 +42,7 @@ export class LinkService {
       throw new ConflictException('Short code already exists');
     }
 
-    // Decode JWT to get userId (if token provided)
+   
     let userId: string | undefined;
     if (token) {
       try {
@@ -55,15 +55,7 @@ export class LinkService {
 
     const expiryDate = expiresAt ? new Date(expiresAt) : new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
 
-    // const newLink = new this.linkModel({
-    //   longUrl,
-    //   shortCode,
-    //   customAlias,
-    //   createdBy: userId,
-    //   expiresAt: expiryDate,
-    // });
 
-    // const saved = await newLink.save();
 
     const newLink = await this.linkModel.create({
   longUrl,
@@ -86,13 +78,12 @@ export class LinkService {
 
 
 async handleRedirectAnalytics(shortCode: string, req: Request): Promise<string> {
-  // Declare once
-//   let link: LinkDocument;
+ 
 
 let link: LinkDocument | null;
 
 
-  // Check cache
+  
   const cached = await this.cacheManager.get(`short:${shortCode}`);
   if (cached) {
     link = cached as LinkDocument;
@@ -107,14 +98,14 @@ let link: LinkDocument | null;
     //console.log('🗃️ From DB:', link.longUrl);
   }
 
-  // Collect metadata
+ 
   const userAgent = req.headers['user-agent'] || 'Unknown';
   const referrer = req.headers['referer'] || 'Direct';
   const ip = req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.ip;
 
-  // Save analytics
+ 
   await this.analyticsModel.create({
-    link: link._id, // ✅ correct usage now
+    link: link._id, 
     timestamp: new Date(),
     userAgent,
     referrer,

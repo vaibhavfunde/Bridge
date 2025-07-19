@@ -1,7 +1,8 @@
-// src/config/app.config.ts
+
 export default () => ({
-  appName: process.env.APP_NAME,
-  appVersion: process.env.APP_VERSION,
-  appDescription: process.env.APP_DESCRIPTION,
+
+  port: parseInt(process.env.PORT, 10) || 3000,
+  mongoUri: process.env.MONGO_URI || 'mongodb://localhost:27017/shortener',
+  jwtSecret: process.env. || 'secret123',
 
 });

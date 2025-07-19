@@ -23,10 +23,9 @@ import { CacheModule } from '@nestjs/cache-manager';
       isGlobal: true,
       load :[appConfig],
       validationSchema: Joi.object({
-        APP_NAME: Joi.string().required(),
-        APP_VERSION: Joi.string().required(),
-        APP_DESCRIPTION: Joi.string().required(),
-        APP_PORT: Joi.number().default(3000),
+        MONGO_URI: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        PORT: Joi.number().default(3000),
       }),
     }),
     UserModule,
@@ -46,8 +45,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 
      CacheModule.register({
       isGlobal: true,
-      ttl: 30000, // Cache TTL in seconds
-      max: 100, // Maximum number of items in cache
+      ttl: 30000, 
+      max: 100,
       
     }),
    

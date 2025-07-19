@@ -1,92 +1,4 @@
-// import { Injectable } from '@nestjs/common';
 
-// @Injectable()
-// export class UserService {
-
-
-
-// //      async isEmailTaken(email: string): Promise<boolean> {
-// //     const user = await this.userModel.findOne({ email });
-// //     return !!user;
-// //   }
-// }
-
-
-// import { Injectable } from '@nestjs/common';
-
-// interface User {
-//   email: string;
-//   password: string;
-//   name?: string;
-// }
-
-// @Injectable()
-// export class UserService {
-//   private users: User[] = []; // In-memory "database"
-
-//   // Check if email already exists
-//   async isEmailTaken(email: string): Promise<boolean> {
-//     const user = this.users.find(user => user.email === email);
-//     return !!user;
-//   }
-
-//   // Create new user
-//   async createUser(userDto: User): Promise<User> {
-//     const userExists = await this.isEmailTaken(userDto.email);
-//     if (userExists) {
-//       throw new Error('User already exists');
-//     }
-
-//     this.users.push(userDto);
-//     return userDto;
-//   }
-
-//   // Find a user by email
-//   async findUserByEmail(email: string): Promise<User | undefined> {
-//     return this.users.find(user => user.email === email);
-//   }
-// }
-
-
-// src/user/user.service.ts
-// import { Injectable, UnauthorizedException } from '@nestjs/common';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { LoginDto } from './dto/login-user.dto';
-// import { User } from './schema/user.schema';
-// import { Model } from 'mongoose';
-// import { InjectModel } from '@nestjs/mongoose';
-
-// @Injectable()
-// export class UserService {
-
-//      constructor(
-//     @InjectModel(User.name)
-//     private readonly userModel: Model<User>,
-//   ) {}
-
-
-
-//   private users: CreateUserDto[] = [];
-
-//   async signup(createUserDto: CreateUserDto): Promise<any> {
-//     this.users.push(createUserDto);
-//     return { message: 'User created successfully', user: createUserDto };
-//   }
-
-//   async login(loginDto: LoginDto): Promise<any> {
-//     const user = this.users.find(
-//       (u) => u.email === loginDto.email && u.password === loginDto.password,
-//     );
-//     if (!user) {
-//       throw new UnauthorizedException('Invalid credentials');
-//     }
-//     return { message: 'Login successful', user };
-//   }
-
-//   async isEmailTaken(email: string): Promise<boolean> {
-//     return this.users.some((user) => user.email === email);
-//   }
-// }
 
 
 import {
@@ -196,65 +108,6 @@ export class UserService {
 
 
 
-  // Login a user
-  // async login(loginDto: LoginDto) {
-  //   const { email, password } = loginDto;
-
-  //  // Check if user exists
-  //   const user = await this.userModel.findOne({ email });
-  //   if (!user) {
-  //     throw new UnauthorizedException('Invalid email or password');
-  //   }
-
-  //   // Validate password
-  //   const isPasswordMatch = await bcrypt.compare(password, user.password);
-  //   if (!isPasswordMatch) {
-  //     throw new UnauthorizedException('Invalid email or password');
-  //   }
-
-  //   // Generate JWT token
-  //   // const token = jwt.sign(
-  //   //   { id: user._id, email: user.email },
-  //   //   process.env.JWT_SECRET || 'secret123',
-  //   //   { expiresIn: '1h' },
-  //   // );
-
-  //   const token = this.generateTokens(user);
-
-  //  // const {password , ...result} = user;
-
-  //   const { password: _removedPassword, ...result } = user;
-
-
-  //   return {
-  //       user: {
-  //     id: user._id,
-  //     email: user.email,
-  //     username: user.username,
-  //     roles: user.roles,
-     
-  //   },
-  //     ...token,
-  //   };
-
-   
-
-
-  //   // const token = this.jwtService.sign({ id: user._id, email: user.email } , {
-  //   //   expiresIn: '1h',
-  //   //   secret: process.env.JWT_SECRET|| 'secret123',
-  //   // })  ;
-
-  //   // return {
-  //   //   message: 'Login successful',
-  //   //   user: {
-  //   //     id: user._id,
-  //   //     email: user.email,
-  //   //     username: user.username,
-  //   //   },
-  //   //   token,
-  //   // };
-  // }
 
 
   async login(loginDto: LoginDto) {
@@ -296,37 +149,7 @@ export class UserService {
   }
 
 
-  // async login(loginDto: LoginDto) {
-  //   const { email, password } = loginDto;
-
-  //   // 1. Check if user exists
-  //   const user = await this.userModel.findOne({ email });
-  //   if (!user) {
-  //     throw new UnauthorizedException('Invalid email or password');
-  //   }
-
-  //   // 2. Check password
-  //   const isPasswordMatch = await bcrypt.compare(password, user.password);
-  //   if (!isPasswordMatch) {
-  //     throw new UnauthorizedException('Invalid email or password');
-  //   }
-
-  //   // 3. Remove password from the user object
-  //   const { password: _removed, ...safeUser } = user.toObject();
-
-  //   // 4. Generate JWT token
-  //   const payload = { sub: user._id, email: user.email };
-  //   const accessToken = this.jwtService.sign(payload, {
-  //     expiresIn: '1h',
-  //   });
-
-  //   // 5. Return response
-  //   return {
-  //     message: 'Login successful',
-  //     user: safeUser,
-  //     accessToken,
-  //   };
-  // }
+  
 
   async refreshToken(refreshToken: string) {
     try {
