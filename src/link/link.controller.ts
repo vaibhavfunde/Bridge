@@ -1,11 +1,4 @@
-// import { Controller } from '@nestjs/common';
 
-// @Controller('link')
-// export class LinkController {}
-
-
-
-// src/link/link.controller.ts
 
 import { Controller, Post, Body, Headers, Param , Get, Req } from '@nestjs/common';
 import { LinkService } from './link.service';
@@ -27,19 +20,7 @@ export class LinkController {
 
 
 
-// async getLink(
-//   @Param('shortCode') shortCode: string,
-//   @Headers('user-agent') userAgent: string,
-//   @Headers('referer') referrer: string,
-//   @Req() req: Request,
-// ) {
-//   return this.linkService.handleRedirectAnalytics(
-//     shortCode,
-//     userAgent || 'Unknown',
-//     referrer || 'Direct',
-//     req
-//   );
-// }
+
   @Get(':shortCode')
   async getLink(
     @Param('shortCode') shortCode: string,

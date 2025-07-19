@@ -1,12 +1,4 @@
-// import { Injectable } from '@nestjs/common';
 
-// @Injectable()
-// export class LinkService {}
-// // 
-
-
-
-// src/link/link.service.ts
 
 // import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -63,86 +55,34 @@ export class LinkService {
 
     const expiryDate = expiresAt ? new Date(expiresAt) : new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
 
-    const newLink = new this.linkModel({
-      longUrl,
-      shortCode,
-      customAlias,
-      createdBy: userId,
-      expiresAt: expiryDate,
-    });
+    // const newLink = new this.linkModel({
+    //   longUrl,
+    //   shortCode,
+    //   customAlias,
+    //   createdBy: userId,
+    //   expiresAt: expiryDate,
+    // });
 
-    const saved = await newLink.save();
+    // const saved = await newLink.save();
+
+    const newLink = await this.linkModel.create({
+  longUrl,
+  shortCode,
+  customAlias,
+  createdBy: userId,
+  expiresAt: expiryDate,
+});
+
 
     return {
       message: 'Short URL created successfully',
       shortUrl: `${process.env.DOMAIN || 'http://localhost:3000'}/links/shortcode/${shortCode}`,
-      expiresAt: saved.expiresAt,
+     
     };
   }
 
 
-//    async handleRedirectAnalytics(shortCode: string, req: Request): Promise<string> {
 
-//      const cached = await this.cacheManager.get(`short:${shortCode}`);
-//     let link;
-
-//     if (cached) {
-//       link = cached as LinkDocument;
-//       console.log('📦 From Cache:', link.longUrl);
-//     }
-//     else{ 
-//     const link = await this.linkModel.findOne({ shortCode });
-
-//     if (!link) {
-//       throw new NotFoundException('Short link not found');
-//     }
-//     await this.cacheManager.set(`short:${shortCode}`, link, 60); 
-// }
-
-    
-
-//     const userAgent = req.headers['user-agent'] || 'Unknown';
-//     const referrer = req.headers['referer'] || 'Direct';
-//     const ip =
-//       req.headers['x-forwarded-for']?.toString().split(',')[0].trim() || req.ip;
-
-//     await this.analyticsModel.create({
-//       link: link._id,
-//       timestamp: new Date(),
-//       userAgent,
-//       referrer,
-//       ip,
-//     });
-
-//     return link.longUrl;
-//   }
-
-//      async handleRedirectAnalytics(shortCode: string, req: Request) {
-//     // 🔍 1. Check cache
-//     const cached = await this.cacheManager.get(`short:${shortCode}`);
-//     let link;
-
-//     if (cached) {
-//       link = cached as LinkDocument;
-//       console.log('📦 From Cache:', link.longUrl);
-//     } else {
-//       // 🔁 2. Fetch from DB and cache it
-//       link = await this.linkModel.findOne({ shortCode });
-//       if (!link) throw new NotFoundException('Link not found');
-//       await this.cacheManager.set(`short:${shortCode}`, link, 60); // Cache for 60 seconds
-//       console.log('🗃️ From DB:', link.longUrl);
-//     }
-
-//     // 🧠 Save analytics (if you want to keep tracking)
-//     await this.analyticsModel.create({
-//       shortCode,
-//       userAgent: req.headers['user-agent'],
-//       referrer: req.headers.referer || '',
-//       ip: req.ip,
-//     });
-
-//     return { longUrl: link.longUrl };
-//   }
 
 
 async handleRedirectAnalytics(shortCode: string, req: Request): Promise<string> {
@@ -164,7 +104,7 @@ let link: LinkDocument | null;
     }
 
     await this.cacheManager.set(`short:${shortCode}`, link, 60); // Cache for 60 seconds
-    console.log('🗃️ From DB:', link.longUrl);
+    //console.log('🗃️ From DB:', link.longUrl);
   }
 
   // Collect metadata

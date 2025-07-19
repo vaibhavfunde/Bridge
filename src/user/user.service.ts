@@ -285,7 +285,15 @@ export class UserService {
     ...token,
   };
 }
+  
 
+ async hashPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, 10);
+  }
+
+  async comparePasswords(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash);
+  }
 
 
   // async login(loginDto: LoginDto) {
