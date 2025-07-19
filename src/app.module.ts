@@ -11,6 +11,8 @@ import appConfig from './config/app.config';
 import { MongooseModule } from '@nestjs/mongoose'; // Import MongooseModule for MongoDB connection
 import { AuthModule } from './auth/auth.module';
 import { LinkModule } from './link/link.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { CacheModule } from '@nestjs/cache-manager';
 
 
 @Module({
@@ -32,6 +34,22 @@ import { LinkModule } from './link/link.module';
     AuthModule,
     
     LinkModule,
+
+     ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 5,
+        },
+      ],
+    }),
+
+     CacheModule.register({
+      isGlobal: true,
+      ttl: 30000, // Cache TTL in seconds
+      max: 100, // Maximum number of items in cache
+      
+    }),
    
   ],
   controllers: [AppController],

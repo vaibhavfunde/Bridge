@@ -51,6 +51,51 @@
 // });
 
 
+// import { Test, TestingModule } from '@nestjs/testing';
+// import { LinkService } from './link.service';
+// import { getModelToken } from '@nestjs/mongoose';
+// import { Link } from './schemas/link.schema';
+// import { LinkAnalytics } from './schemas/analytics.schema';
+
+// describe('LinkService', () => {
+//   let service: LinkService;
+
+//   const mockLinkModel = {
+//     findOne: jest.fn(),
+//     save: jest.fn(),
+//     create: jest.fn(),
+//   };
+
+//   const mockAnalyticsModel = {
+//     create: jest.fn(),
+//   };
+
+//   beforeEach(async () => {
+//     const module: TestingModule = await Test.createTestingModule({
+//       providers: [
+//         LinkService,
+//         {
+//           provide: getModelToken(Link.name),
+//           useValue: mockLinkModel,
+//         },
+//         {
+//           provide: getModelToken(LinkAnalytics.name),
+//           useValue: mockAnalyticsModel,
+//         },
+//       ],
+//     }).compile();
+
+//     service = module.get<LinkService>(LinkService);
+//   });
+
+//   it('should be defined', () => {
+//     expect(service).toBeDefined();
+//   });
+// });
+
+
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { LinkService } from './link.service';
 import { getModelToken } from '@nestjs/mongoose';
@@ -60,27 +105,24 @@ import { LinkAnalytics } from './schemas/analytics.schema';
 describe('LinkService', () => {
   let service: LinkService;
 
-  const mockLinkModel = {
-    findOne: jest.fn(),
-    save: jest.fn(),
-    create: jest.fn(),
-  };
-
-  const mockAnalyticsModel = {
-    create: jest.fn(),
-  };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LinkService,
         {
           provide: getModelToken(Link.name),
-          useValue: mockLinkModel,
+          useValue: {}, // You can stub this further as needed
         },
         {
           provide: getModelToken(LinkAnalytics.name),
-          useValue: mockAnalyticsModel,
+          useValue: {}, // Stub as needed
+        },
+        {
+          provide: CACHE_MANAGER,
+          useValue: {
+            get: jest.fn().mockResolvedValue(undefined),
+            set: jest.fn().mockResolvedValue(undefined),
+          },
         },
       ],
     }).compile();
@@ -92,4 +134,5 @@ describe('LinkService', () => {
     expect(service).toBeDefined();
   });
 });
+
 

@@ -1,0 +1,28 @@
+# config:
+#   target: 'http://localhost:3000'
+#   phases:
+#     - duration: 30
+#       arrivalRate: 350
+#   defaults:
+#     headers:
+#       user-agent: "ArtilleryBot"
+#       referer: "https://test-traffic.com"
+# scenarios:
+#   - flow:
+#       - get:
+#           url: "/links/snrp82"
+
+
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 60        # Run test for 60 seconds
+      arrivalRate: 200    # 200 new users per second → ~12,000 requests total
+  defaults:
+    headers:
+      Accept: "application/json"
+scenarios:
+  - name: "High traffic test for short link"
+    flow:
+      - get:
+          url: "/links/snrp82"

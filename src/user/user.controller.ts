@@ -20,12 +20,14 @@
 // }
 
 
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login-user.dto';
 import { UserExistsPipe } from './pipes/user-exists.pipe';
 import { UserNotFoundPipe } from './pipes/user-not-found.pipe';
+import { Throttle } from '@nestjs/throttler';
+
 // import { SignupResponseDto } from './dto/signup-response.dto';
 // import { LoginResponseDto } from './dto/login-response.dto';
 
@@ -56,6 +58,9 @@ export class UserController {
 
 @Post('login')
   @HttpCode(HttpStatus.OK)
+// 5 requests per 60 seconds
+
+
   async login(
     @Body('email', UserNotFoundPipe) email: string,
     @Body() loginDto: LoginDto,
@@ -64,5 +69,5 @@ export class UserController {
     return this.userService.login(loginDto); // You can use loginDto.email
   }
 
-  
+
 }
