@@ -80,7 +80,7 @@ Indexes are created on `shortCode` and `createdBy` for fast lookup and stat retr
 ### 1. Clone Repository
 
 ```bash
-[git clone https://github.com/vaibhavfunde/Bridge.git]
+git clone https://github.com/vaibhavfunde/Bridge.git
 cd link-shortener
 ```
 
